@@ -76,17 +76,19 @@ export default {
 					request.headers.get('Origin') ?? '*'
 				);
 			}
+
+			// Fallthrough behavior, proxy request to Spring Web
+			return responseWithAllowOrigin(
+				await fetch(
+					requestProxyToBackend(request, url, env)
+				),
+				request.headers.get('Origin') ?? '*'
+			);
 		} else if (url.pathname === '/api') {
 			// Force trailing slash after /api
 			return Response.redirect(request.url + '/' + url.search);
 		}
 
-		// Fallthrough behavior, proxy request to Spring Web
-		return responseWithAllowOrigin(
-			await fetch(
-				requestProxyToBackend(request, url, env)
-			),
-			request.headers.get('Origin') ?? '*'
-		);
+		return new Response(`Not found`, { status: 404 });
 	},
 } satisfies ExportedHandler<Env>;
