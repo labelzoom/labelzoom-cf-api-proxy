@@ -4,6 +4,9 @@ main = "src/index.ts"
 compatibility_date = "2024-08-06"
 compatibility_flags = ["nodejs_compat"]
 
+[limits]
+cpu_ms = 1000
+
 # Automatically place your workloads in an optimal location to minimize latency.
 # If you are running back-end logic in a Worker, running it closer to your back-end infrastructure
 # rather than the end user may result in better performance.
@@ -16,8 +19,10 @@ compatibility_flags = ["nodejs_compat"]
 # - https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
 # Note: Use secrets to store sensitive data.
 # - https://developers.cloudflare.com/workers/configuration/secrets/
-# [vars]
-# MY_VARIABLE = "production_value"
+[vars]
+LZ_LOG_CONVERSION_DATA = "false"
+LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
+# LZ_PROD_API_SECRET_KEY = <SECRET>
 
 # Bind the Workers AI model catalog. Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#workers-ai
@@ -91,9 +96,9 @@ compatibility_flags = ["nodejs_compat"]
 
 # Bind an R2 Bucket. Use R2 to store arbitrarily large blobs of data, such as files.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#r2-buckets
-# [[r2_buckets]]
-# binding = "MY_BUCKET"
-# bucket_name = "my-bucket"
+[[r2_buckets]]
+binding = "LZ_R2_BUCKET"
+bucket_name = "labelzoom-conversions-prod"
 
 # Bind another Worker service. Use this binding to call another Worker without network overhead.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings

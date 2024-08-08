@@ -7,19 +7,19 @@ import worker from '../src/index';
 // `Request` to pass to `worker.fetch()`.
 const IncomingRequest = Request<unknown, IncomingRequestCfProperties>;
 
-describe('Hello World worker', () => {
-	it('responds with Hello World! (unit style)', async () => {
-		const request = new IncomingRequest('http://example.com');
+describe('LabelZoom Reverse Proxy worker (API routes)', () => {
+	it('responds with LabelZoom API version (unit style)', async () => {
+		const request = new IncomingRequest('https://www.labelzoom.net/api/v2/heartbeat');
 		// Create an empty context to pass to `worker.fetch()`.
 		const ctx = createExecutionContext();
 		const response = await worker.fetch(request, env, ctx);
 		// Wait for all `Promise`s passed to `ctx.waitUntil()` to settle before running test assertions
 		await waitOnExecutionContext(ctx);
-		expect(await response.text()).toMatchInlineSnapshot(`"Hello World!"`);
+		expect(await response.text()).toMatch(/LabelZoom v\d+\.\d+\.\d+/);
 	});
 
-	it('responds with Hello World! (integration style)', async () => {
-		const response = await SELF.fetch('https://example.com');
-		expect(await response.text()).toMatchInlineSnapshot(`"Hello World!"`);
+	it('responds with LabelZoom API version (integration style)', async () => {
+		const response = await SELF.fetch('https://www.labelzoom.net/api/v2/heartbeat');
+		expect(await response.text()).toMatch(/LabelZoom v\d+\.\d+\.\d+/);
 	});
 });
