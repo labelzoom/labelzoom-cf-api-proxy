@@ -89,6 +89,15 @@ export default {
 			return Response.redirect(request.url + '/' + url.search);
 		}
 
-		return new Response(`Not found`, { status: 404 });
+		// TODO: Eventually we'll wall off access to the rest of the endpoints once everything has been fully migrated
+		// return new Response(`Not found`, { status: 404 });
+
+		// Fallthrough behavior, proxy request to Spring Web
+		return responseWithAllowOrigin(
+			await fetch(
+				requestProxyToBackend(request, url, env)
+			),
+			request.headers.get('Origin') ?? '*'
+		);
 	},
 } satisfies ExportedHandler<Env>;
