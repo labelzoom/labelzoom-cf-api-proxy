@@ -31,7 +31,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: deploy --name labelzoom-cf-api-proxy
+          command: deploy --name labelzoom-cf-api-proxy-beta
   prod-deploy:
     runs-on: ubuntu-latest
     needs: [test]
