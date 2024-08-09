@@ -17,7 +17,7 @@ const corsValidOrigins = [
  * @param request 
  * @returns 
  */
-export async function handleOptions(request: any): Promise<Response> {
+export async function handleOptions(request: Request): Promise<Response> {
 	const origin = request.headers.get("Origin") ?? '';
 
 	if (!corsValidOrigins.includes(origin)) {
@@ -33,8 +33,8 @@ export async function handleOptions(request: any): Promise<Response> {
 		return new Response(null, {
 			headers: {
 				...corsHeaders,
-				"Access-Control-Allow-Origin": request.headers.get("Origin"),
-				"Access-Control-Allow-Headers": request.headers.get("Access-Control-Request-Headers"),
+				"Access-Control-Allow-Origin": request.headers.get("Origin") ?? '',
+				"Access-Control-Allow-Headers": request.headers.get("Access-Control-Request-Headers") ?? '',
 			},
 		});
 	} else {
