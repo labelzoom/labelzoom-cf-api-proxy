@@ -57,7 +57,21 @@ async function proxyRequestToBackend(request: Request, url: URL, env: Env, reque
 	newRequest.headers.set('X-LZ-IP', ip);
 	newRequest.headers.set('X-LZ-Secret-Key', env.LZ_PROD_API_SECRET_KEY)
 	if (requestID) newRequest.headers.set("X-LZ-RequestID", requestID);
-	return await fetch(newRequest);
+	const response = await fetch(newRequest);
+    
+    // Force redirects to be relative because I couldn't get it to work in Spring Boot
+    if (response.status === 301 || response.status === 302) {
+		const locationHeader = response.headers.get('Location') ?? '';
+        if (locationHeader.includes('labelzoom.net/')) {
+            const url = new URL(locationHeader);
+
+            const newResponse = new Response(response.body, response);
+            newResponse.headers.set('Location', url.pathname + url.search);
+            return newResponse;
+        }
+    }
+
+	return response;
 }
 
 export default {
