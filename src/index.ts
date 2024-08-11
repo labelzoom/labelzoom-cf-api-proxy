@@ -32,7 +32,7 @@ async function handleConversionLog(request: Request<unknown, IncomingRequestCfPr
 	if (loggingEnabled && url.searchParams.has('params')) ctx.waitUntil(env.LZ_R2_BUCKET.put(requestID + '/params.json', url.searchParams.get('params')));
 
 	// Generate response
-	const response = await fetch(requestProxyToBackend(request, url, env, requestID));
+	const response = await proxyRequestToBackend(request, url, env, requestID);
 
 	// Clone and log response asynchronously
 	if (loggingEnabled) ctx.waitUntil(env.LZ_R2_BUCKET.put(requestID + '/out', response.clone().body));
@@ -47,7 +47,7 @@ async function handleConversionLog(request: Request<unknown, IncomingRequestCfPr
  * @param backendUrl 
  * @returns 
  */
-function requestProxyToBackend(request: Request, url: URL, env: Env, requestID = ''): Request {
+async function proxyRequestToBackend(request: Request, url: URL, env: Env, requestID = ''): Response {
 	const backendUrl = env.LZ_PROD_API_BASE_URL + url.pathname + url.search;
 	const newRequest = new Request(backendUrl ?? request.url, request);
 	let ip = request.headers.get("X-Forwarded-For") ?? '';
@@ -57,7 +57,7 @@ function requestProxyToBackend(request: Request, url: URL, env: Env, requestID =
 	newRequest.headers.set('X-LZ-IP', ip);
 	newRequest.headers.set('X-LZ-Secret-Key', env.LZ_PROD_API_SECRET_KEY)
 	if (requestID) newRequest.headers.set("X-LZ-RequestID", requestID);
-	return newRequest;
+	return await fetch(newRequest);
 }
 
 export default {
@@ -79,9 +79,7 @@ export default {
 
 			// Fallthrough behavior, proxy request to Spring Web
 			return responseWithAllowOrigin(
-				await fetch(
-					requestProxyToBackend(request, url, env)
-				),
+				await proxyRequestToBackend(request, url, env),
 				request.headers.get('Origin') ?? '*'
 			);
 		} else if (url.pathname === '/api') {
@@ -94,9 +92,7 @@ export default {
 
 		// Fallthrough behavior, proxy request to Spring Web
 		return responseWithAllowOrigin(
-			await fetch(
-				requestProxyToBackend(request, url, env)
-			),
+			await proxyRequestToBackend(request, url, env),
 			request.headers.get('Origin') ?? '*'
 		);
 	},
