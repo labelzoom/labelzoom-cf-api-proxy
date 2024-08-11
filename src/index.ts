@@ -98,7 +98,8 @@ export default {
 			);
 		} else if (url.pathname === '/api') {
 			// Force trailing slash after /api
-			return Response.redirect(request.url + '/' + url.search);
+			url.pathname = '/api/';
+			return Response.redirect(url.toString());
 		}
 
 		// TODO: Eventually we'll wall off access to the rest of the endpoints once everything has been fully migrated
