@@ -47,7 +47,7 @@ async function handleConversionLog(request: Request<unknown, IncomingRequestCfPr
  * @param backendUrl 
  * @returns 
  */
-async function proxyRequestToBackend(request: Request, url: URL, env: Env, requestID = ''): Response {
+async function proxyRequestToBackend(request: Request, url: URL, env: Env, requestID = ''): Promise<Response> {
 	const backendUrl = env.LZ_PROD_API_BASE_URL + url.pathname + url.search;
 	const newRequest = new Request(backendUrl ?? request.url, request);
 	let ip = request.headers.get("X-Forwarded-For") ?? '';
