@@ -3,6 +3,7 @@ name = "labelzoom-cf-api-proxy"
 main = "src/index.ts"
 compatibility_date = "2024-08-06"
 compatibility_flags = ["nodejs_compat"]
+tail_consumers = [{service = "labelzoom-cf-api-proxy-tail"}]
 
 [limits]
 cpu_ms = 1000
