@@ -28,20 +28,28 @@ LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
 [env.beta.vars]
 LZ_LOG_SAMPLE_RATE = 1.0
 LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
+[env.beta.limits]
+cpu_ms = 100
 
 [env.public.vars]
 LZ_LOG_SAMPLE_RATE = 0.0
 LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
+[env.public.limits]
+cpu_ms = 100
 
 [env.eus1.vars]
 LZ_LOG_SAMPLE_RATE = 0.0
-LZ_PROD_API_BASE_URL = "https://prod-api-eus1.labelzoom.net"
+LZ_PROD_API_BASE_URL = "https://prod-api-eus1-backend.labelzoom.net"
+[env.eus1.limits]
+cpu_ms = 100
 # [env.eus1.placement]
 # mode = "smart"
 
 [env.eus2.vars]
 LZ_LOG_SAMPLE_RATE = 0.0
-LZ_PROD_API_BASE_URL = "https://prod-api-eus2.labelzoom.net"
+LZ_PROD_API_BASE_URL = "https://prod-api-eus2-backend.labelzoom.net"
+[env.eus2.limits]
+cpu_ms = 100
 # [env.eus2.placement]
 # mode = "smart"
 
@@ -121,17 +129,21 @@ LZ_PROD_API_BASE_URL = "https://prod-api-eus2.labelzoom.net"
 binding = "LZ_R2_BUCKET"
 bucket_name = "labelzoom-conversions-dev"
 
+[[env.beta.r2_buckets]]
+binding = "LZ_R2_BUCKET"
+bucket_name = "labelzoom-conversions-dev"
+
 [[env.public.r2_buckets]]
 binding = "LZ_R2_BUCKET"
 bucket_name = "labelzoom-conversions-prod"
 
 [[env.eus1.r2_buckets]]
 binding = "LZ_R2_BUCKET"
-bucket_name = "labelzoom-conversions-prod"
+bucket_name = "labelzoom-conversions-prod-eus1"
 
 [[env.eus2.r2_buckets]]
 binding = "LZ_R2_BUCKET"
-bucket_name = "labelzoom-conversions-prod"
+bucket_name = "labelzoom-conversions-prod-eus2"
 
 # Bind another Worker service. Use this binding to call another Worker without network overhead.
 # Docs: https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
