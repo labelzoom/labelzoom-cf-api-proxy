@@ -13,8 +13,6 @@
 
 import { handleOptions, responseWithAllowOrigin } from "./cors";
 
-const IS_TRUE = /true/i;
-
 /**
  * Log conversion request and response data to Cloudflare R2
  * @param request 
@@ -25,7 +23,7 @@ const IS_TRUE = /true/i;
  */
 async function handleConversionLog(request: Request<unknown, IncomingRequestCfProperties<unknown>>, env: Env, ctx: ExecutionContext, url: URL) {
 	const requestID = new Date().toISOString().substring(0, 19).replaceAll('-', '/').replaceAll('T', '/').replaceAll(':', '') + '--' + crypto.randomUUID();
-	const loggingEnabled = IS_TRUE.test(env.LZ_LOG_CONVERSION_DATA);
+	const loggingEnabled = Math.random() < env.LZ_LOG_SAMPLE_RATE;
 
 	// Clone and log request asynchronously
 	if (loggingEnabled) ctx.waitUntil(env.LZ_R2_BUCKET.put(requestID + '/in', request.clone().body));
@@ -49,7 +47,7 @@ async function handleConversionLog(request: Request<unknown, IncomingRequestCfPr
  */
 async function proxyRequestToBackend(request: Request, url: URL, env: Env, requestID = ''): Promise<Response> {
 	const backendUrl = env.LZ_PROD_API_BASE_URL + url.pathname + url.search;
-	const newRequest = new Request(backendUrl ?? request.url, request);
+	const newRequest = new Request(backendUrl, request);
 	let ip = request.headers.get("X-Forwarded-For") ?? '';
 	if (!ip) {
 		ip = request.headers.get("Cf-Connecting-Ip") ?? '';
