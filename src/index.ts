@@ -21,7 +21,7 @@ import { handleOptions, responseWithAllowOrigin } from "./cors";
  * @param url 
  * @returns 
  */
-async function handleConversionLog(request: Request<unknown, IncomingRequestCfProperties<unknown>>, env: Env, ctx: ExecutionContext, url: URL) {
+async function handleConversionLog(request: Request<unknown, IncomingRequestCfProperties<unknown>>, env: Env, ctx: ExecutionContext, url: URL): Promise<Response> {
 	const requestID = new Date().toISOString().substring(0, 19).replaceAll('-', '/').replaceAll('T', '/').replaceAll(':', '') + '--' + crypto.randomUUID();
 	const loggingEnabled = Math.random() < env.LZ_LOG_SAMPLE_RATE;
 
