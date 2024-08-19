@@ -3,7 +3,9 @@ name = "labelzoom-cf-api-proxy"
 main = "src/index.ts"
 compatibility_date = "2024-08-06"
 compatibility_flags = ["nodejs_compat"]
-tail_consumers = [{service = "labelzoom-cf-api-proxy-tail"}]
+tail_consumers = [
+    { service = "labelzoom-cf-api-proxy-tail", environment = "production" }
+]
 
 [limits]
 cpu_ms = 100
@@ -21,7 +23,7 @@ cpu_ms = 100
 # Note: Use secrets to store sensitive data.
 # - https://developers.cloudflare.com/workers/configuration/secrets/
 [vars]
-LZ_LOG_SAMPLE_RATE = 0.0
+LZ_LOG_SAMPLE_RATE = 1.0
 LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
 # LZ_PROD_API_SECRET_KEY = <SECRET>
 
