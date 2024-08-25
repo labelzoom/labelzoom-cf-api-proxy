@@ -22,30 +22,37 @@ import { handleOptions, responseWithAllowOrigin } from "./cors";
  * @returns 
  */
 async function handleConversionLog(request: Request<unknown, IncomingRequestCfProperties<unknown>>, env: Env, ctx: ExecutionContext, url: URL): Promise<Response> {
-	const requestID = new Date().toISOString().substring(0, 19).replaceAll('-', '/').replaceAll('T', '/').replaceAll(':', '') + '--' + crypto.randomUUID();
-	const loggingEnabled = Math.random() < env.LZ_LOG_SAMPLE_RATE;
+	try {
+		const requestID = new Date().toISOString().substring(0, 19).replaceAll('-', '/').replaceAll('T', '/').replaceAll(':', '') + '--' + crypto.randomUUID();
+		const loggingEnabled = Math.random() < env.LZ_LOG_SAMPLE_RATE;
+	
+		// Example path: [0]/[1]api/[2]v2/[3]convert/[4]zpl/[5]to/[6]pdf
+		const conversionPathParts = url.pathname.split('/');
+		const sourceFormat = conversionPathParts[4].toLowerCase();
+		const targetFormat = conversionPathParts[6].toLowerCase();
 
-	// Example path: [0]/[1]api/[2]v2/[3]convert/[4]zpl/[5]to/[6]pdf
-	const conversionPathParts = url.pathname.split('/');
-	const sourceFormat = conversionPathParts[4];
-	const targetFormat = conversionPathParts[6];
-
-	// Clone and log request asynchronously
-	if (loggingEnabled) ctx.waitUntil(Promise.all([
-		env.LZ_R2_BUCKET.put(requestID + `/in.${sourceFormat}`, request.clone().body),
-		env.LZ_R2_BUCKET.put(requestID + '/params.json', url.searchParams.get('params'))
-	]));
-
-	// Generate response
-	const response = await proxyRequestToBackend(request, url, env, requestID);
-
-	// Clone and log response asynchronously
-	if (loggingEnabled) ctx.waitUntil(
-		env.LZ_R2_BUCKET.put(requestID + `/out.${targetFormat}`, response.clone().body)
-	);
-
-	// Return response to client
-	return response;
+		// TODO: Unwrap Base64 (if applicable) before storing in R2
+	
+		// Clone and log request asynchronously
+		if (loggingEnabled) ctx.waitUntil(Promise.all([
+			env.LZ_R2_BUCKET.put(requestID + `/in.${sourceFormat}`, request.clone().body), // TODO: Set content type
+			env.LZ_R2_BUCKET.put(requestID + '/params.json', url.searchParams.get('params'), {httpMetadata:{contentType:'application/json'}})
+		]));
+	
+		// Generate response
+		const response = await proxyRequestToBackend(request, url, env, requestID);
+	
+		// Clone and log response asynchronously
+		if (loggingEnabled) ctx.waitUntil(
+			env.LZ_R2_BUCKET.put(requestID + `/out.${targetFormat}`, response.clone().body) // TODO: Set content type
+		);
+	
+		// Return response to client
+		return response;
+	} catch (error) {
+		console.error("error logging conversion data", error);
+		return await proxyRequestToBackend(request, url, env);
+	}
 }
 
 /**
