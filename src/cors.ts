@@ -3,7 +3,7 @@ const corsHeaders = {
 	"Access-Control-Allow-Methods": "GET,HEAD,POST,PUT,DELETE,OPTIONS",
 	"Access-Control-Max-Age": "86400",
 	"Access-Control-Allow-Credentials": "true",
-	"Access-Control-Expose-Headers": "X-LZ-RequestID",
+	"Access-Control-Expose-Headers": "X-LZ-Request-ID",
 };
 
 /**
@@ -54,7 +54,7 @@ export function responseWithAllowOrigin(response: Response, origin = '*'): Respo
 	// Add cache control headers
 	newResponse.headers.set('Access-Control-Allow-Origin', origin);
 	newResponse.headers.set('Access-Control-Allow-Credentials', 'true');
-	newResponse.headers.set('Access-Control-Expose-Headers', 'X-LZ-RequestID');
+	newResponse.headers.set('Access-Control-Expose-Headers', 'X-LZ-Request-ID');
 
 	return newResponse;
 }

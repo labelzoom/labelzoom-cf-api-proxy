@@ -70,7 +70,7 @@ async function proxyRequestToBackend(request: Request, url: URL, env: Env, reque
 	}
 	newRequest.headers.set('X-LZ-IP', ip);
 	newRequest.headers.set('X-LZ-Secret-Key', env.LZ_PROD_API_SECRET_KEY)
-	if (requestID) newRequest.headers.set("X-LZ-RequestID", requestID);
+	if (requestID) newRequest.headers.set("X-LZ-Request-ID", requestID);
 	const response = await fetch(newRequest);
     
     // Force redirects to be relative because I couldn't get it to work in Spring Boot
