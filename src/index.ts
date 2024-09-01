@@ -96,7 +96,7 @@ export default {
 		if (url.pathname.startsWith('/api/')) {
 			if (request.method === "OPTIONS") {
 				// Handle CORS preflight requests
-				return handleOptions(request);
+				return handleOptions(request, env);
 			}
 			if (url.pathname.startsWith('/api/v2/convert/')) {
 				return responseWithAllowOrigin(

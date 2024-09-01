@@ -5,22 +5,15 @@ const corsHeaders = {
 	"Access-Control-Allow-Credentials": "true",
 };
 
-const corsValidOrigins = [
-	'https://labelzoom.net',
-	'https://www.labelzoom.net',
-	'https://api.labelzoom.net',
-	// 'http://localhost:3000',
-];
-
 /**
  * Handle OPTIONS request for CORS
  * @param request 
  * @returns 
  */
-export async function handleOptions(request: Request): Promise<Response> {
+export async function handleOptions(request: Request, env: Env): Promise<Response> {
 	const origin = request.headers.get("Origin") ?? '';
 
-	if (!corsValidOrigins.includes(origin)) {
+	if (!env.LZ_ALLOWED_ORIGINS.includes(origin)) {
 		return new Response(`Origin ${origin} not allowed`, { status: 403 });
 	}
 

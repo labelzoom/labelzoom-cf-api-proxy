@@ -23,23 +23,39 @@ cpu_ms = 100
 # Note: Use secrets to store sensitive data.
 # - https://developers.cloudflare.com/workers/configuration/secrets/
 [vars]
+LZ_ALLOWED_ORIGINS = [
+    'https://labelzoom.net',
+	'https://www.labelzoom.net'
+]
 LZ_LOG_SAMPLE_RATE = 1.0
 LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
 # LZ_PROD_API_SECRET_KEY = <SECRET>
 
 [env.beta.vars]
+LZ_ALLOWED_ORIGINS = [
+    'https://labelzoom.net',
+	'https://www.labelzoom.net'
+]
 LZ_LOG_SAMPLE_RATE = 1.0
 LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
 [env.beta.limits]
 cpu_ms = 100
 
 [env.public.vars]
+LZ_ALLOWED_ORIGINS = [
+    'https://labelzoom.net',
+	'https://www.labelzoom.net'
+]
 LZ_LOG_SAMPLE_RATE = 0.0
 LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
 [env.public.limits]
 cpu_ms = 100
 
 [env.eus1.vars]
+LZ_ALLOWED_ORIGINS = [
+    'https://labelzoom.net',
+	'https://www.labelzoom.net'
+]
 LZ_LOG_SAMPLE_RATE = 0.0
 LZ_PROD_API_BASE_URL = "https://prod-api-eus1-backend.labelzoom.net"
 [env.eus1.limits]
@@ -48,7 +64,11 @@ cpu_ms = 100
 # mode = "smart"
 
 [env.eus2.vars]
-LZ_LOG_SAMPLE_RATE = 0.0
+LZ_ALLOWED_ORIGINS = [
+    'https://labelzoom.net',
+	'https://www.labelzoom.net'
+]
+LZ_LOG_SAMPLE_RATE = 0.001
 LZ_PROD_API_BASE_URL = "https://prod-api-eus2-backend.labelzoom.net"
 [env.eus2.limits]
 cpu_ms = 100
