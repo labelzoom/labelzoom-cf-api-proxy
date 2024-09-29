@@ -25,7 +25,9 @@ cpu_ms = 100
 [vars]
 LZ_ALLOWED_ORIGINS = [
     'https://labelzoom.net',
-    'https://www.labelzoom.net'
+    'https://www.labelzoom.net',
+    'https://beta.labelzoom.net',
+    'https://gatsby.labelzoom.net',
 ]
 LZ_LOG_SAMPLE_RATE = 1.0
 LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
@@ -34,7 +36,9 @@ LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
 [env.beta.vars]
 LZ_ALLOWED_ORIGINS = [
     'https://labelzoom.net',
-    'https://www.labelzoom.net'
+    'https://www.labelzoom.net',
+    'https://beta.labelzoom.net',
+    'https://gatsby.labelzoom.net'
 ]
 LZ_LOG_SAMPLE_RATE = 1.0
 LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
@@ -44,7 +48,9 @@ cpu_ms = 100
 [env.public.vars]
 LZ_ALLOWED_ORIGINS = [
     'https://labelzoom.net',
-    'https://www.labelzoom.net'
+    'https://www.labelzoom.net',
+    'https://beta.labelzoom.net',
+    'https://gatsby.labelzoom.net'
 ]
 LZ_LOG_SAMPLE_RATE = 0.0
 LZ_PROD_API_BASE_URL = "https://api-backend.labelzoom.net"
@@ -54,7 +60,9 @@ cpu_ms = 100
 [env.eus1.vars]
 LZ_ALLOWED_ORIGINS = [
     'https://labelzoom.net',
-    'https://www.labelzoom.net'
+    'https://www.labelzoom.net',
+    'https://beta.labelzoom.net',
+    'https://gatsby.labelzoom.net'
 ]
 LZ_LOG_SAMPLE_RATE = 0.0
 LZ_PROD_API_BASE_URL = "https://prod-api-eus1-backend.labelzoom.net"
@@ -66,7 +74,9 @@ cpu_ms = 100
 [env.eus2.vars]
 LZ_ALLOWED_ORIGINS = [
     'https://labelzoom.net',
-    'https://www.labelzoom.net'
+    'https://www.labelzoom.net',
+    'https://beta.labelzoom.net',
+    'https://gatsby.labelzoom.net'
 ]
 LZ_LOG_SAMPLE_RATE = 0.001
 LZ_PROD_API_BASE_URL = "https://prod-api-eus2-backend.labelzoom.net"

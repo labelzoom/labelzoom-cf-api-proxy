@@ -7,5 +7,12 @@ export default defineWorkersConfig({
                 wrangler: { configPath: './wrangler.toml' },
             },
         },
+        reporters: [
+            'default',
+            ['junit', { suiteName: 'Unit and Integration tests' }],
+        ],
+        outputFile: {
+            junit: './junit-report.xml',
+        }
     },
 });
